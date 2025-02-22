@@ -6,13 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Categoria extends Model
 {
-    // esto es lo que no es necesaro ponerlo
-    protected $table = 'categorias';
-    #protected $primaryKey = 'id';
+    protected $table='categorias';
 
-    //esto si es necesario
-
-    protected $fillable = ['nombre'];
-    
+    protected $fillable=['nombre'];
 
 }

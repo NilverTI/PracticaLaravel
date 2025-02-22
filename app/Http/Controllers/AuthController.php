@@ -26,7 +26,7 @@ class AuthController extends Controller
             // Regenerar la sesión para evitar ataques de fijación de sesión
             $request->session()->regenerate();
             // Redirigir al usuario a la ruta deseada (dashboard en este ejemplo)
-            return redirect()->intended(route('user.create'));
+            return redirect()->intended(route('dashboard'));
         }
 
         return back()->withErrors([

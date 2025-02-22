@@ -22,16 +22,16 @@ class CategoriaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => 'required|min:3|max:50',
+            'nombre' => 'required|min:3|max:50'
         ];
     }
 
-    public function messages(): array
+    public function messages()
     {
-        return [
-            'nombre.required' => 'El campo nombre es obligatorio',
-            'nombre.min' => 'El campo nombre debe tener al menos 3 caracteres',
-            'nombre.max' => 'El campo nombre debe tener como maximo 50 caracteres',
+        return  [
+            'nombre.required' => 'El nombre es obligatorio.',
+            'nombre.min' => 'El nombre debe tener al menos 3 caracteres.',
+            'nombre.max' => 'El nombre no puede tener más de 50 caracteres.'
         ];
     }
 }

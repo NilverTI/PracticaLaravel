@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CategoriaRequest;
 use App\Models\Categoria;
 use Illuminate\Http\Request;
+use App\Http\Requests\CategoriaRequest;
 
 class CategoriaController extends Controller
 {
@@ -13,9 +13,9 @@ class CategoriaController extends Controller
      */
     public function index(Request $request)
     {
-        $texto = $request->get('texto');
-
-        $registros = Categoria::where('nombre','LIKE','%'.$texto.'%')->orWhere('id','LIKE','%'.$texto.'%')->orderBy('id','desc')->paginate(10);
+        //ORM Eloquent
+        $texto=$request->get('texto');
+        $registros=Categoria::where('nombre','LIKE','%'.$texto.'%')->orderBy('id','desc')->paginate(10);
         return view('categoria.index', compact(['registros','texto']));
     }
 
@@ -32,11 +32,19 @@ class CategoriaController extends Controller
      */
     public function store(CategoriaRequest $request)
     {
-        $registro = new Categoria();
-        $registro->nombre = $request->input('nombre');
+        /*
+        $validatedData = $request->validate([
+            'nombre' => 'required|min:3|max:50',
+        ], [
+            'nombre.required' => 'El nombre es obligatorio.',
+            'nombre.min' => 'El nombre debe tener al menos 3 caracteres.',
+            'nombre.max' => 'El nombre no puede tener más de 50 caracteres.',
+        ]);
+        */
+        $registro=new Categoria();
+        $registro->nombre=$request->input('nombre');
         $registro->save();
-
-        return redirect()->route('categorias.index')->with('mensaje','Nuevo Registro '.$registro->nombre.' agerado con exito');
+        return redirect()->route('categorias.index')->with('mensaje','Registro '.$registro->nombre.' agregado correctamente.');
     }
 
     /**
@@ -44,7 +52,7 @@ class CategoriaController extends Controller
      */
     public function show(Categoria $categoria)
     {
-        //
+        return "Este es el método Show";
     }
 
     /**
@@ -52,8 +60,8 @@ class CategoriaController extends Controller
      */
     public function edit($id)
     {
-        $registro = Categoria::findOrFail($id);
-        return view('categoria.edit', compact('registro'));
+        $registro=Categoria::findOrFail($id);
+        return view('categoria.edit',compact('registro'));
     }
 
     /**
@@ -61,24 +69,23 @@ class CategoriaController extends Controller
      */
     public function update(CategoriaRequest $request, $id)
     {
-        $registro = Categoria::findOrFail($id);
-        $registro->nombre = $request->input('nombre');
-        $registro->save();
-
-        return redirect()->route('categorias.index')->with('mensaje','Registro '.$registro->nombre.' actualizado con exito');
+            $registro=Categoria::findOrFail($id);
+            $registro->nombre=$request->input('nombre');
+            $registro->save();
+            return redirect()->route('categorias.index')->with('mensaje','Registro '.$registro->nombre.' actualizado correctamente.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy ($id)
     {
         try {
-            $registro = Categoria::findOrFail($id);
+            $registro=Categoria::findOrFail($id);
             $registro->delete();
-            return redirect()->route('categorias.index')->with('mensaje','Registro '.$registro->nombre.' eliminado con exito');
+            return redirect()->route('categorias.index')->with('mensaje','Registro '.$registro->nombre.' eliminado correctamente.');
         } catch (\Illuminate\Database\QueryException $e) {
-            return redirect()->route('categorias.index')->with('error','Error al eliminar el registro porque esta siendo usado');
+            return redirect()->route('categorias.index')->with('error','No se puede eliminar el registro '.$registro->nombre.' porque esta siendo usado.');
         }
     }
 }
